@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { X, Clock, User, AlertTriangle, CheckCircle } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 interface QuickActionsModalProps {
   isOpen: boolean;
@@ -17,6 +18,7 @@ const QuickActionsModal: React.FC<QuickActionsModalProps> = ({
   data,
 }) => {
   const [isLoading] = useState(false);
+  const navigate = useNavigate();
 
   if (!isOpen) return null;
   const renderContent = () => {
@@ -78,7 +80,10 @@ const QuickActionsModal: React.FC<QuickActionsModalProps> = ({
                       {new Date(report.createdAt).toLocaleDateString()}
                     </div>
                     <button 
-                      onClick={() => window.location.href = '/admin/reports'}
+                      onClick={() => {
+                        navigate('/admin/reports');
+                        onClose();
+                      }}
                       className="text-xs text-primary-600 hover:text-primary-700"
                     >
                       View Details
@@ -221,10 +226,12 @@ const QuickActionsModal: React.FC<QuickActionsModalProps> = ({
             className="btn-secondary"
           >
             Close
-          </button>
-          {actionType === "pending-reports" && (
+          </button>          {actionType === "pending-reports" && (
             <button
-              onClick={() => window.location.href = '/admin/reports'}
+              onClick={() => {
+                navigate('/admin/reports');
+                onClose();
+              }}
               className="btn-primary"
             >
               Manage Reports
