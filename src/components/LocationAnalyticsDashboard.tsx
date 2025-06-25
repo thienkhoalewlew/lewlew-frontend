@@ -16,15 +16,10 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell,
   AreaChart,
   Area,
 } from "recharts";
 import { useLocationAnalyticsStore } from "../store/locationAnalyticsStore";
-
-const COLORS = ["#0ea5e9", "#22c55e", "#f59e0b", "#ef4444", "#8b5cf6", "#ec4899"];
 
 interface StatsCardProps {
   title: string;
@@ -77,12 +72,10 @@ const StatsCard: React.FC<StatsCardProps> = ({
   );
 };
 
-const LocationAnalyticsDashboard: React.FC = () => {
-  const {
+const LocationAnalyticsDashboard: React.FC = () => {  const {
     analytics,
     topLocations,
     locationGrowth,
-    geographicDistribution,
     isLoading,
     isLoadingCharts,
     error,
@@ -211,11 +204,11 @@ const LocationAnalyticsDashboard: React.FC = () => {
           icon={<Users className="h-6 w-6" />}
           color="purple"
         />
-      </div>
+        </div>
 
-      {/* Charts Section */}
-      <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-6 min-h-0 overflow-y-auto">
-        {/* Location Growth Chart */}
+      {/* Charts Section - 2 rows vertical layout */}
+      <div className="flex-1 space-y-6 min-h-0 overflow-y-auto">
+        {/* Location Growth Chart - Row 1 */}
         <div className="card">
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-lg font-semibold text-secondary-900 flex items-center">
@@ -263,43 +256,8 @@ const LocationAnalyticsDashboard: React.FC = () => {
             </ResponsiveContainer>
           </div>
         </div>
-
-        {/* Geographic Distribution */}
+        {/* Top Active Locations - Row 2 */}
         <div className="card">
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="text-lg font-semibold text-secondary-900 flex items-center">
-              <BarChart3 className="h-5 w-5 mr-2" />
-              Geographic Distribution
-            </h3>
-          </div>
-          <div className="h-64">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={geographicDistribution}
-                  cx="50%"
-                  cy="50%"
-                  labelLine={false}
-                  label={({ region, percentage }) => `${region}: ${percentage}%`}
-                  outerRadius={80}
-                  fill="#8884d8"
-                  dataKey="count"
-                >
-                {geographicDistribution.map((_, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={COLORS[index % COLORS.length]}
-                    />
-                  ))}
-                </Pie>
-                <Tooltip />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-
-        {/* Top Locations */}
-        <div className="card lg:col-span-2">
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-lg font-semibold text-secondary-900 flex items-center">
               <MapPin className="h-5 w-5 mr-2" />
@@ -328,7 +286,7 @@ const LocationAnalyticsDashboard: React.FC = () => {
                       </div>
                     </div>
                     <div>
-                      <h4 className="font-medium text-secondary-900">
+                      <h4 className="font-medium text-secondary-900" title={location.locationName}>
                         {location.locationName}
                       </h4>
                       <p className="text-sm text-secondary-600">
@@ -365,6 +323,12 @@ const LocationAnalyticsDashboard: React.FC = () => {
                       value,
                       name === "postCount" ? "Posts" : "Users",
                     ]}
+                    labelFormatter={(label) => {
+                      const location = topLocations.find(loc => 
+                        loc.locationName === label
+                      );
+                      return location?.locationName || label;
+                    }}
                   />
                   <Bar dataKey="postCount" fill="#0ea5e9" name="postCount" />
                   <Bar dataKey="userCount" fill="#22c55e" name="userCount" />

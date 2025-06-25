@@ -326,8 +326,7 @@ const ReportsManagement: React.FC = () => {
                       {report.postId?.caption || "No caption"}
                     </p>
                     <p>
-                      <strong>Reported by:</strong> {report.reporterId?.fullName || "Unknown"}{" "}
-                      ({report.reporterId?.email || "Unknown email"})
+                      <strong>Reported by:</strong> {report.reporterId?.fullName || "Unknown"}
                     </p>
                   </div>
 

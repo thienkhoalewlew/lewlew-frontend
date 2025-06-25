@@ -22,5 +22,6 @@ export interface LocationAnalytics {
     region: string;
     count: number;
     percentage: number;
+    coordinates?: [number, number];
   }[];
 }
