@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Users,
   FileText,
@@ -58,6 +59,7 @@ const StatsCard: React.FC<StatsCardProps> = ({
 interface DashboardOverviewProps {}
 
 const DashboardOverview: React.FC<DashboardOverviewProps> = () => {
+  const navigate = useNavigate();
   const { 
     stats, 
     isLoading, 
@@ -301,7 +303,7 @@ const DashboardOverview: React.FC<DashboardOverviewProps> = () => {
           <div className="space-y-3">
             {/* Primary Actions */}
             <button 
-              onClick={() => window.location.href = '/admin/reports'}
+              onClick={() => navigate('/admin/reports')}
               className="w-full btn-primary flex items-center justify-center space-x-2"
             >
               <AlertTriangle className="h-4 w-4" />
